@@ -27,8 +27,8 @@ namespace Vc
   using std::experimental::all_of;
   
   // define constants
-  const std::experimental::native_simd<double> One(1);
-  const std::experimental::native_simd<double> Zero(0);
+  constexpr int One = 1;
+  constexpr int Zero = 0;
   
   // define inline if functions
   template<typename T>
@@ -50,29 +50,21 @@ namespace Vc
   {
     return x < 0;
   }
-
-  template<typename T>
-  typename T::mask_type isfinite(const T &x)
-  {
-    typename T::mask_type mask;
-    for (int i = 0; i < T::mask_type::size(); i++)
-      mask[i] = std::isfinite(x[i]);
-    return mask;
-  }
+  
+  using std::experimental::isfinite;
   
   // define reduction functions
   template<typename Mask>
   int count(const Mask &mask)
   {
-    int result(0);
-    for (int i = 0; i < Mask::size(); i++)
-      result += (int)(mask[i]);
-    return result;
+    return popcount(mask);
   }
   
   template<typename T>
   typename T::value_type min(const T &x)
   {
+    // seems std-simd is missing:
+    //return hmin(x);
     typename T::value_type result(x[0]);
     for (int i = 1; i < T::size(); i++)
       result = std::min(result, x[i]);
@@ -82,6 +74,8 @@ namespace Vc
   template<typename T>
   typename T::value_type max(const T &x)
   {
+    // seems std-simd is missing:
+    //return hmax(x);
     typename T::value_type result(x[0]);
     for (int i = 1; i < T::size(); i++)
       result = std::max(result, x[i]);
