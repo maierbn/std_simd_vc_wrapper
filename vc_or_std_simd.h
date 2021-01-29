@@ -63,23 +63,13 @@ namespace Vc
   template<typename T>
   typename T::value_type min(const T &x)
   {
-    // seems std-simd is missing:
-    //return hmin(x);
-    typename T::value_type result(x[0]);
-    for (int i = 1; i < T::size(); i++)
-      result = std::min(result, x[i]);
-    return result;
+    return hmin(x);
   }
   
   template<typename T>
   typename T::value_type max(const T &x)
   {
-    // seems std-simd is missing:
-    //return hmax(x);
-    typename T::value_type result(x[0]);
-    for (int i = 1; i < T::size(); i++)
-      result = std::max(result, x[i]);
-    return result;
+    return hmax(x);
   }
 }
 #else
